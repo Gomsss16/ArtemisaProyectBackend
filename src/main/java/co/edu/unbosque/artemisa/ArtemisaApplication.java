@@ -19,5 +19,4 @@ public class ArtemisaApplication {
 		return new ModelMapper();
 	}
 
-	// https://mkyong.com/java/how-to-send-http-request-getpost-in-java/
 }
