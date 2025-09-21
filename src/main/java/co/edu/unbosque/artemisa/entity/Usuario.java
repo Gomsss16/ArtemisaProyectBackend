@@ -2,6 +2,8 @@ package co.edu.unbosque.artemisa.entity;
 
 
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -93,6 +95,29 @@ public abstract class Usuario {
 		return "Usuario [id=" + id + ", usuario=" + usuario + ", Contraseña=" + contrasenia + ", fechaDeNacimiento="
 				+ fechaDeNacimiento + "]";
 	}
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(contrasenia, fechaDeNacimiento, id, nivelDePermiso, usuario);
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		return Objects.equals(contrasenia, other.contrasenia)
+				&& Objects.equals(fechaDeNacimiento, other.fechaDeNacimiento) && Objects.equals(id, other.id)
+				&& Objects.equals(nivelDePermiso, other.nivelDePermiso) && Objects.equals(usuario, other.usuario);
+	}
+	
+	
 	
 	
 
