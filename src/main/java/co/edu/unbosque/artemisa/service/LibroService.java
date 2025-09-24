@@ -1,5 +1,6 @@
 package co.edu.unbosque.artemisa.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,10 +12,9 @@ import co.edu.unbosque.artemisa.dto.LibroDTO;
 import co.edu.unbosque.artemisa.entity.Libro;
 import co.edu.unbosque.artemisa.repository.LibroRepository;
 
-
 @Service
-public class LibroService implements CRUDOperation<LibroDTO>{
-	
+public class LibroService implements CRUDOperation<LibroDTO> {
+
 	@Autowired
 	private LibroRepository libroRepo;
 
@@ -34,36 +34,37 @@ public class LibroService implements CRUDOperation<LibroDTO>{
 
 	@Override
 	public List<LibroDTO> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Libro> entityList = libroRepo.findAll();
+		List<LibroDTO> dtoList = new ArrayList<>();
+		entityList.forEach((entity) -> {
+			LibroDTO dto = modelMapper.map(entity, LibroDTO.class);
+			dtoList.add(dto);
+		});
+		return dtoList;
 	}
 
 	@Override
 	public int deleteById(Long id) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int updateById(Long id, LibroDTO newData) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public long count() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public boolean exist(Long id) {
-		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	public boolean findlibroAlreadyTaken(Libro newUser) {
-		Optional<Libro> found = libroRepo.findByTitulo(newUser.getTitulo());
+
+	public boolean findlibroAlreadyTaken(Libro newLibro) {
+		Optional<Libro> found = libroRepo.findByTitulo(newLibro.getTitulo());
 		if (found.isPresent()) {
 			return true;
 		} else {
@@ -71,4 +72,13 @@ public class LibroService implements CRUDOperation<LibroDTO>{
 		}
 	}
 
+	public int deleteByTitle(String titulo) {
+		Optional<Libro> found = libroRepo.findByTitulo(titulo);
+		if (found.isPresent()) {
+			libroRepo.delete(found.get());
+			return 0;
+		} else {
+			return 1;
+		}
+	}
 }

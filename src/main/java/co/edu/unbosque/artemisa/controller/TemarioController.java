@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.artemisa.dto.TemarioDTO;
 import co.edu.unbosque.artemisa.service.TemarioService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @CrossOrigin(origins = { "*" })

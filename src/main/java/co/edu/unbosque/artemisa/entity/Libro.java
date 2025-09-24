@@ -15,12 +15,21 @@ import jakarta.persistence.Table;
 @Table(name = "libro")
 public class Libro {
 
-	private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
 	@Column(unique = true)
 	private String titulo;
-	private String autor;
+
+	private String author;
+
 	@Column(columnDefinition = "TEXT")
 	private String descripcion;
+
+	private String coverUrl;
+	private String bookUrl;
+	private String onlineUrl;
 
 	@Lob
 	@Column(name = "pdf", columnDefinition = "LONGBLOB")
@@ -31,15 +40,17 @@ public class Libro {
 	private byte[] imagen;
 
 	public Libro() {
-		// TODO Auto-generated constructor stub
 	}
-	
-	public Libro(Long id, String titulo, String autor, String descripcion, byte[] pdf, byte[] imagen) {
-		super();
+
+	public Libro(String titulo, String author, String descripcion, String coverUrl, String bookUrl,
+			String onlineUrl, byte[] pdf, byte[] imagen) {
 		this.id = id;
 		this.titulo = titulo;
-		this.autor = autor;
+		this.author = author;
 		this.descripcion = descripcion;
+		this.coverUrl = coverUrl;
+		this.bookUrl = bookUrl;
+		this.onlineUrl = onlineUrl;
 		this.pdf = pdf;
 		this.imagen = imagen;
 	}
@@ -50,7 +61,7 @@ public class Libro {
 		int result = 1;
 		result = prime * result + Arrays.hashCode(imagen);
 		result = prime * result + Arrays.hashCode(pdf);
-		result = prime * result + Objects.hash(autor, descripcion, id, titulo);
+		result = prime * result + Objects.hash(author, descripcion, id, titulo, coverUrl, bookUrl, onlineUrl);
 		return result;
 	}
 
@@ -63,11 +74,13 @@ public class Libro {
 		if (getClass() != obj.getClass())
 			return false;
 		Libro other = (Libro) obj;
-		return Objects.equals(autor, other.autor) && Objects.equals(descripcion, other.descripcion)
+		return Objects.equals(author, other.author) && Objects.equals(descripcion, other.descripcion)
 				&& Objects.equals(id, other.id) && Arrays.equals(imagen, other.imagen) && Arrays.equals(pdf, other.pdf)
-				&& Objects.equals(titulo, other.titulo);
+				&& Objects.equals(titulo, other.titulo) && Objects.equals(coverUrl, other.coverUrl)
+				&& Objects.equals(bookUrl, other.bookUrl) && Objects.equals(onlineUrl, other.onlineUrl);
 	}
 
+	// Getters y Setters
 	public Long getId() {
 		return id;
 	}
@@ -84,12 +97,12 @@ public class Libro {
 		this.titulo = titulo;
 	}
 
-	public String getAutor() {
-		return autor;
+	public String getAuthor() {
+		return author;
 	}
 
-	public void setAutor(String autor) {
-		this.autor = autor;
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
 	public String getDescripcion() {
@@ -98,6 +111,30 @@ public class Libro {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public String getCoverUrl() {
+		return coverUrl;
+	}
+
+	public void setCoverUrl(String coverUrl) {
+		this.coverUrl = coverUrl;
+	}
+
+	public String getBookUrl() {
+		return bookUrl;
+	}
+
+	public void setBookUrl(String bookUrl) {
+		this.bookUrl = bookUrl;
+	}
+
+	public String getOnlineUrl() {
+		return onlineUrl;
+	}
+
+	public void setOnlineUrl(String onlineUrl) {
+		this.onlineUrl = onlineUrl;
 	}
 
 	public byte[] getPdf() {
@@ -118,13 +155,8 @@ public class Libro {
 
 	@Override
 	public String toString() {
-		return "Libro [id=" + id + ", titulo=" + titulo + ", autor=" + autor + ", descripcion=" + descripcion + ", pdf="
+		return "Libro [id=" + id + ", titulo=" + titulo + ", author=" + author + ", descripcion=" + descripcion
+				+ ", coverUrl=" + coverUrl + ", bookUrl=" + bookUrl + ", onlineUrl=" + onlineUrl + ", pdf="
 				+ Arrays.toString(pdf) + ", imagen=" + Arrays.toString(imagen) + "]";
 	}
-	
-	
-	
-	
-	
-
 }

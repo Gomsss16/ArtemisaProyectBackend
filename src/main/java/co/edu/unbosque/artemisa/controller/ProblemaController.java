@@ -17,19 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.unbosque.artemisa.dto.ProblemaDTO;
 import co.edu.unbosque.artemisa.dto.TemarioDTO;
 import co.edu.unbosque.artemisa.service.ProblemaService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @CrossOrigin(origins = { "*" })
 @RequestMapping(path = { "/problema" })
 public class ProblemaController {
-	
+
 	@Autowired
 	private ProblemaService probleServ;
-	
+
 	@PostMapping(path = "/createproblemajson", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> createNewWithJSON(@RequestBody ProblemaDTO nuevoProblema) {
-		
+
 		System.out.println("Datos recibidos: " + nuevoProblema.toString());
 
 		int status = probleServ.create(nuevoProblema);
@@ -45,11 +45,11 @@ public class ProblemaController {
 			return new ResponseEntity<>("{\"error\": \"Error desconocido\"}", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@PostMapping(path = "/createproblema")
 	public ResponseEntity<String> createNew(@RequestParam String titulo, @RequestParam int dificultad,
-			@RequestParam String tema, @RequestParam String juez , @RequestParam String link) {
-		ProblemaDTO nuevoProblema = new ProblemaDTO(null, titulo,dificultad,tema,juez, link );
+			@RequestParam String tema, @RequestParam String juez, @RequestParam String link) {
+		ProblemaDTO nuevoProblema = new ProblemaDTO(null, titulo, dificultad, tema, juez, link);
 		int status = probleServ.create(nuevoProblema);
 
 		switch (status) {
@@ -63,25 +63,25 @@ public class ProblemaController {
 			return new ResponseEntity<>("Error desconocido", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-    @GetMapping("/getall")
-    public ResponseEntity<List<ProblemaDTO>> getAll() {
-        List<ProblemaDTO> Problemas = probleServ.getAll();
-        System.out.println("Problemas: " + Problemas.size());
-        
-        if (Problemas.isEmpty()) {
-            return new ResponseEntity<>(Problemas, HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(Problemas, HttpStatus.OK);
-        }
-    }
-    
+
+	@GetMapping("/getall")
+	public ResponseEntity<List<ProblemaDTO>> getAll() {
+		List<ProblemaDTO> Problemas = probleServ.getAll();
+		System.out.println("Problemas: " + Problemas.size());
+
+		if (Problemas.isEmpty()) {
+			return new ResponseEntity<>(Problemas, HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(Problemas, HttpStatus.OK);
+		}
+	}
+
 	@DeleteMapping("/deletebyTitulo")
-	ResponseEntity<String> deleteByTitulo(@RequestParam  String titulo) {
+	ResponseEntity<String> deleteByTitulo(@RequestParam String titulo) {
 		int status = probleServ.deleteByTema(titulo);
 		if (status == 0) {
 			return new ResponseEntity<>("User deleted successfully", HttpStatus.ACCEPTED);
-		} else{
+		} else {
 			return new ResponseEntity<>("Error on delete", HttpStatus.NOT_FOUND);
 		}
 	}

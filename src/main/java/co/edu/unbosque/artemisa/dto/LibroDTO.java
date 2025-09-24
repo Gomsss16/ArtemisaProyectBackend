@@ -17,9 +17,8 @@ public class LibroDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LibroDTO(Long id, String titulo, String autor, String descripcion, byte[] pdf, byte[] imagen) {
+	public LibroDTO( String titulo, String autor, String descripcion, byte[] pdf, byte[] imagen) {
 		super();
-		this.id = id;
 		this.titulo = titulo;
 		this.autor = autor;
 		this.descripcion = descripcion;

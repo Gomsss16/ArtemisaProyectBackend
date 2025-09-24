@@ -22,7 +22,6 @@ public class AdministradorService implements CRUDOperation<AdministradorDTO> {
     private ModelMapper modelMapper;
 
     public AdministradorService() {
-        // Constructor vacío
     }
 
     @Override
@@ -32,7 +31,6 @@ public class AdministradorService implements CRUDOperation<AdministradorDTO> {
         System.out.println("Rol: " + data.getNivelDePermiso());
         
         try {
-            // Validar datos de entrada
             if (data.getUsuario() == null || data.getUsuario().trim().isEmpty()) {
                 System.out.println("ERROR: Usuario vacío");
                 return 2;
@@ -43,7 +41,6 @@ public class AdministradorService implements CRUDOperation<AdministradorDTO> {
                 return 2;
             }
             
-            // Encriptar datos antes de guardar
             Administrador entity = new Administrador();
             entity.setUsuario(AESUtil.encrypt(data.getUsuario()));
             entity.setContrasenia(AESUtil.encrypt(data.getContrasenia()));
@@ -58,19 +55,18 @@ public class AdministradorService implements CRUDOperation<AdministradorDTO> {
             
             System.out.println("Datos encriptados correctamente");
             
-            // Verificar si ya existe
             if (findUsernameAlreadyTaken(entity)) {
                 System.out.println("ERROR: Usuario ya existe - " + data.getUsuario());
-                return 1; // Usuario ya existe
+                return 1; 
             } else {
                 adminrepo.save(entity);
                 System.out.println("SUCCESS: Administrador creado - " + data.getUsuario());
-                return 0; // Éxito
+                return 0; 
             }
         } catch (Exception e) {
             System.err.println("ERROR en creación: " + e.getMessage());
             e.printStackTrace();
-            return 2; // Error
+            return 2; 
         }
     }
 
@@ -80,7 +76,6 @@ public class AdministradorService implements CRUDOperation<AdministradorDTO> {
         System.out.println("Password length: " + (password != null ? password.length() : 0));
         
         try {
-            // Validaciones básicas
             if (username == null || username.trim().isEmpty()) {
                 System.out.println("ERROR: Username vacío");
                 return 1;
@@ -91,20 +86,17 @@ public class AdministradorService implements CRUDOperation<AdministradorDTO> {
                 return 2;
             }
             
-            // Encriptar username para buscar en BD
             String encryptedUsername = AESUtil.encrypt(username);
             System.out.println("Username encriptado: " + encryptedUsername);
             
-            // Buscar en la base de datos
             Optional<Administrador> adminFound = adminrepo.findByUsuario(encryptedUsername);
             System.out.println("Usuario encontrado: " + adminFound.isPresent());
             
             if (adminFound.isEmpty()) {
                 System.out.println("ERROR: Usuario no encontrado - " + username);
-                return 1; // Usuario no encontrado
+                return 1; 
             }
             
-            // Desencriptar contraseña almacenada
             Administrador admin = adminFound.get();
             String decryptedPassword = AESUtil.decrypt(admin.getContrasenia());
             System.out.println("Password almacenado desencriptado obtenido");
@@ -112,16 +104,16 @@ public class AdministradorService implements CRUDOperation<AdministradorDTO> {
             
             if (password.equals(decryptedPassword)) {
                 System.out.println("SUCCESS: Login exitoso - " + username);
-                return 0; // Login exitoso
+                return 0; 
             } else {
                 System.out.println("ERROR: Contraseña incorrecta - " + username);
-                return 2; // Contraseña incorrecta
+                return 2;
             }
             
         } catch (Exception e) {
             System.err.println("ERROR en login: " + e.getMessage());
             e.printStackTrace();
-            return 3; // Error de sistema
+            return 3; 
         }
     }
 

@@ -10,14 +10,22 @@ public class LinkDTO {
 	private String descripcion;
 	private String enlace;
 	private byte[] imagen;
+	private String imagenUrl;
+
+	public String getImagenUrl() {
+		return imagenUrl;
+	}
+
+	public void setImagenUrl(String imagenUrl) {
+		this.imagenUrl = imagenUrl;
+	}
 
 	public LinkDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LinkDTO(Long id, String titulo, String descripcion, String enlace, byte[] imagen) {
+	public LinkDTO(String titulo, String descripcion, String enlace, byte[] imagen) {
 		super();
-		this.id = id;
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.enlace = enlace;
@@ -93,5 +101,4 @@ public class LinkDTO {
 				+ ", imagen=" + Arrays.toString(imagen) + "]";
 	}
 
-	
 }
