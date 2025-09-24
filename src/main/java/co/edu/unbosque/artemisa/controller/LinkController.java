@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import co.edu.unbosque.artemisa.dto.LinkDTO;
@@ -44,7 +43,7 @@ public class LinkController {
 		}
 	}
 
-	// ← ENDPOINT FALTANTE 1
+
 	@GetMapping("/getall")
 	public ResponseEntity<List<LinkDTO>> getAll() {
 		List<LinkDTO> links = linkserv.getAll();
@@ -57,7 +56,7 @@ public class LinkController {
 		}
 	}
 
-	// ← ENDPOINT FALTANTE 2
+
 	@DeleteMapping("/deletebyTitle")
 	ResponseEntity<String> deleteByTitle(@RequestParam String title) {
 		int status = linkserv.deleteByTitle(title);
@@ -70,10 +69,10 @@ public class LinkController {
 
 	@PostMapping(path = "/createlink")
 	public ResponseEntity<String> createNew(@RequestParam String titulo, @RequestParam String descripcion,
-			@RequestParam String enlace, @RequestParam("imagen") MultipartFile imagen) {
+			@RequestParam String enlace, @RequestParam String imagenBase64) {
 
 		try {
-			LinkDTO nuevoLink = new LinkDTO(titulo, descripcion, enlace, null);
+			LinkDTO nuevoLink = new LinkDTO(null, titulo,descripcion,enlace,imagenBase64);
 			int status = linkserv.create(nuevoLink);
 
 			switch (status) {

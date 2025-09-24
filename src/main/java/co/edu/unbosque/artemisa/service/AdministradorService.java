@@ -19,7 +19,7 @@ public class AdministradorService implements CRUDOperation<AdministradorDTO> {
     @Autowired
     private AdministradorRepository adminrepo;
     @Autowired
-    private ModelMapper modelMapper;
+    private ModelMapper modelMapper;	
 
     public AdministradorService() {
     }
@@ -213,6 +213,44 @@ public class AdministradorService implements CRUDOperation<AdministradorDTO> {
         return adminrepo.existsById(id);
     }
 
+    public int actualizarImagen(String usuario, String imagenBase64) {
+        try {
+            String usuarioEncriptado = AESUtil.encrypt(usuario); // ← ENCRIPTAR PRIMERO
+            Optional<Administrador> found = adminrepo.findByUsuario(usuarioEncriptado);
+            
+            if (found.isPresent()) {
+                Administrador admin = found.get();
+                admin.setImagenPerfil(imagenBase64);
+                adminrepo.save(admin);
+                System.out.println("Imagen guardada para: " + usuario);
+                return 0;
+            }
+            System.out.println("Usuario no encontrado: " + usuario);
+            return 1;
+            
+        } catch (Exception e) {
+            System.err.println("Error actualizando imagen: " + e.getMessage());
+            return 2;
+        }
+    }
+
+    public String obtenerImagen(String usuario) {
+        try {
+            String usuarioEncriptado = AESUtil.encrypt(usuario); // ← ENCRIPTAR PRIMERO
+            Optional<Administrador> found = adminrepo.findByUsuario(usuarioEncriptado);
+            
+            if (found.isPresent()) {
+                return found.get().getImagenPerfil();
+            }
+            return null;
+            
+        } catch (Exception e) {
+            System.err.println("Error obteniendo imagen: " + e.getMessage());
+            return null;
+        }
+    }
+
+
     public boolean findUsernameAlreadyTaken(Administrador newUser) {
         try {
             Optional<Administrador> found = adminrepo.findByUsuario(newUser.getUsuario());
@@ -224,4 +262,5 @@ public class AdministradorService implements CRUDOperation<AdministradorDTO> {
             return false;
         }
     }
+    
 }

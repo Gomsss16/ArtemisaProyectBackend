@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import co.edu.unbosque.artemisa.dto.LibroDTO;
 import co.edu.unbosque.artemisa.entity.Libro;
 import co.edu.unbosque.artemisa.repository.LibroRepository;
+import java.util.Base64;
 
 @Service
 public class LibroService implements CRUDOperation<LibroDTO> {
@@ -23,24 +24,52 @@ public class LibroService implements CRUDOperation<LibroDTO> {
 
 	@Override
 	public int create(LibroDTO data) {
-		Libro entity = modelMapper.map(data, Libro.class);
-		if (findlibroAlreadyTaken(entity)) {
-			return 1;
-		} else {
-			libroRepo.save(entity);
-			return 0;
-		}
-	}
+	    Libro entity = new Libro();
+	    entity.setTitulo(data.getTitulo());
+	    entity.setAuthor(data.getAuthor());
+	    entity.setDescripcion(data.getDescripcion());
 
+	    if (data.getPdfBase64() != null && !data.getPdfBase64().isEmpty()) {
+	        entity.setPdf(Base64.getDecoder().decode(data.getPdfBase64()));
+	    }
+
+	    if (data.getImagenBase64() != null && !data.getImagenBase64().isEmpty()) {
+	        entity.setImagen(Base64.getDecoder().decode(data.getImagenBase64()));
+	    }
+
+	    if (findlibroAlreadyTaken(entity)) {
+	        return 1;
+	    }
+
+	    libroRepo.save(entity);
+	    return 0;
+	}
+	
 	@Override
 	public List<LibroDTO> getAll() {
-		List<Libro> entityList = libroRepo.findAll();
-		List<LibroDTO> dtoList = new ArrayList<>();
-		entityList.forEach((entity) -> {
-			LibroDTO dto = modelMapper.map(entity, LibroDTO.class);
-			dtoList.add(dto);
-		});
-		return dtoList;
+	    List<Libro> entityList = libroRepo.findAll();
+	    List<LibroDTO> dtoList = new ArrayList<>();
+
+	    entityList.forEach((entity) -> {
+	        LibroDTO dto = new LibroDTO();
+	        dto.setId(entity.getId());
+	        dto.setTitulo(entity.getTitulo());
+	        dto.setAuthor(entity.getAuthor());
+	        dto.setDescripcion(entity.getDescripcion());
+
+	        // Codificar byte[] a Base64 para enviar al front
+	        if (entity.getPdf() != null) {
+	            dto.setPdfBase64(Base64.getEncoder().encodeToString(entity.getPdf()));
+	        }
+
+	        if (entity.getImagen() != null) {
+	            dto.setImagenBase64(Base64.getEncoder().encodeToString(entity.getImagen()));
+	        }
+
+	        dtoList.add(dto);
+	    });
+
+	    return dtoList;
 	}
 
 	@Override

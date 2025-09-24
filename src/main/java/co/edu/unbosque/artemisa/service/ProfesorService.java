@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import co.edu.unbosque.artemisa.dto.ProfesorDTO;
 import co.edu.unbosque.artemisa.entity.Profesor;
 import co.edu.unbosque.artemisa.repository.ProfesorRepository;
+import co.edu.unbosque.artemisa.util.AESUtil;
 
 @Service
 public class ProfesorService implements CRUDOperation<ProfesorDTO> {
@@ -168,6 +169,43 @@ public class ProfesorService implements CRUDOperation<ProfesorDTO> {
             return 3;
         }
     }
+
+	public int actualizarImagen(String usuario, String imagenBase64) {
+	    try {
+	        String usuarioEncriptado = AESUtil.encrypt(usuario); 
+	        Optional<Profesor> found = proferepo.findByUsuario(usuarioEncriptado);
+	        
+	        if (found.isPresent()) {
+	        	Profesor admin = found.get();
+	            admin.setImagenPerfil(imagenBase64);
+	            proferepo.save(admin);
+	            System.out.println("Imagen guardada para: " + usuario);
+	            return 0;
+	        }
+	        System.out.println("Usuario no encontrado: " + usuario);
+	        return 1;
+	        
+	    } catch (Exception e) {
+	        System.err.println("Error actualizando imagen: " + e.getMessage());
+	        return 2;
+	    }
+	}
+
+	public String obtenerImagen(String usuario) {
+	    try {
+	        String usuarioEncriptado = AESUtil.encrypt(usuario); 
+	        Optional<Profesor> found = proferepo.findByUsuario(usuarioEncriptado);
+	        
+	        if (found.isPresent()) {
+	            return found.get().getImagenPerfil();
+	        }
+	        return null;
+	        
+	    } catch (Exception e) {
+	        System.err.println("Error obteniendo imagen: " + e.getMessage());
+	        return null;
+	    }
+	}
 
     @Override
     public long count() {

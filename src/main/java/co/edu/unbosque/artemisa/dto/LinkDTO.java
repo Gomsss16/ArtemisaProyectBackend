@@ -1,6 +1,5 @@
 package co.edu.unbosque.artemisa.dto;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 public class LinkDTO {
@@ -9,37 +8,107 @@ public class LinkDTO {
 	private String titulo;
 	private String descripcion;
 	private String enlace;
-	private byte[] imagen;
-	private String imagenUrl;
+	private String imagenBase64;
+	
 
-	public String getImagenUrl() {
-		return imagenUrl;
-	}
 
-	public void setImagenUrl(String imagenUrl) {
-		this.imagenUrl = imagenUrl;
-	}
 
 	public LinkDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LinkDTO(String titulo, String descripcion, String enlace, byte[] imagen) {
+
+
+
+	public LinkDTO(Long id, String titulo, String descripcion, String enlace, String imagenBase64) {
 		super();
+		this.id = id;
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.enlace = enlace;
-		this.imagen = imagen;
+		this.imagenBase64 = imagenBase64;
 	}
+
+
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+
+
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+
+
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+
+
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+
+
+
+	public String getEnlace() {
+		return enlace;
+	}
+
+
+
+
+	public void setEnlace(String enlace) {
+		this.enlace = enlace;
+	}
+
+
+
+
+	public String getImagenBase64() {
+		return imagenBase64;
+	}
+
+
+
+
+	public void setImagenBase64(String imagenBase64) {
+		this.imagenBase64 = imagenBase64;
+	}
+
+
+
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(imagen);
-		result = prime * result + Objects.hash(descripcion, enlace, id, titulo);
-		return result;
+		return Objects.hash(descripcion, enlace, id, imagenBase64, titulo);
 	}
+
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -51,54 +120,18 @@ public class LinkDTO {
 			return false;
 		LinkDTO other = (LinkDTO) obj;
 		return Objects.equals(descripcion, other.descripcion) && Objects.equals(enlace, other.enlace)
-				&& Objects.equals(id, other.id) && Arrays.equals(imagen, other.imagen)
+				&& Objects.equals(id, other.id) && Objects.equals(imagenBase64, other.imagenBase64)
 				&& Objects.equals(titulo, other.titulo);
 	}
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
-	public String getTitulo() {
-		return titulo;
-	}
-
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	public String getEnlace() {
-		return enlace;
-	}
-
-	public void setEnlace(String enlace) {
-		this.enlace = enlace;
-	}
-
-	public byte[] getImagen() {
-		return imagen;
-	}
-
-	public void setImagen(byte[] imagen) {
-		this.imagen = imagen;
-	}
 
 	@Override
 	public String toString() {
 		return "LinkDTO [id=" + id + ", titulo=" + titulo + ", descripcion=" + descripcion + ", enlace=" + enlace
-				+ ", imagen=" + Arrays.toString(imagen) + "]";
+				+ ", imagenBase64=" + imagenBase64 + "]";
 	}
 
+	
 }

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import co.edu.unbosque.artemisa.dto.LibroDTO;
@@ -67,12 +66,12 @@ public class LibroController {
 	}
 
 	@PostMapping(path = "/createlibro")
-	public ResponseEntity<String> createNew(@RequestParam String titulo, @RequestParam String autor,
-			@RequestParam String descripcion, @RequestParam("pdf") MultipartFile pdf,
-			@RequestParam("imagen") MultipartFile imagen) {
+	public ResponseEntity<String> createNew(@RequestParam String titulo, @RequestParam String author,
+			@RequestParam String descripcion, @RequestParam String imagenBase64,
+			@RequestParam String pdfBase64) {
 
 		try {
-			LibroDTO nuevoLibro = new LibroDTO(titulo, autor, descripcion, null, null);
+			LibroDTO nuevoLibro = new LibroDTO(titulo,author,descripcion,imagenBase64,pdfBase64);
 			int status = libroserv.create(nuevoLibro);
 
 			switch (status) {

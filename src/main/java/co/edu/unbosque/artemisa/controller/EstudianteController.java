@@ -1,6 +1,8 @@
 package co.edu.unbosque.artemisa.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -132,4 +134,39 @@ public class EstudianteController {
 	public ResponseEntity<String> test() {
 		return new ResponseEntity<>("{\"message\": \"Endpoint Estudiante funcionando\"}", HttpStatus.OK);
 	}
+	@PostMapping(path = "/actualizarImagen", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> actualizarImagen(@RequestBody Map<String, Object> request) {
+	    try {
+	        String usuario = (String) request.get("usuario");
+	        String imagenBase64 = (String) request.get("imagenBase64");
+	        
+	        int resultado = estuserv.actualizarImagen(usuario, imagenBase64);
+	        
+	        if (resultado == 0) {
+	            return new ResponseEntity<>("{\"message\": \"Imagen actualizada\"}", HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>("{\"error\": \"Usuario no encontrado\"}", HttpStatus.NOT_FOUND);
+	        }
+	    } catch (Exception e) {
+	        return new ResponseEntity<>("{\"error\": \"Error interno\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+
+	@GetMapping("/obtenerImagen")
+	public ResponseEntity<Map<String, String>> obtenerImagen(@RequestParam String usuario) {
+	    try {
+	        String imagen = estuserv.obtenerImagen(usuario);
+	        Map<String, String> response = new HashMap<>();
+	        
+	        if (imagen != null && !imagen.isEmpty()) {
+	            response.put("imagenBase64", imagen);
+	            return new ResponseEntity<>(response, HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	        }
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(new HashMap<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+
 }

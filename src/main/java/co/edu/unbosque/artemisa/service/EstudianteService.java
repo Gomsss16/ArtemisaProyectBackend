@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import co.edu.unbosque.artemisa.dto.EstudianteDTO;
 import co.edu.unbosque.artemisa.entity.Estudiante;
 import co.edu.unbosque.artemisa.repository.EstudiateRepository;
+import co.edu.unbosque.artemisa.util.AESUtil;
 
 @Service
 public class EstudianteService implements CRUDOperation<EstudianteDTO> {
@@ -173,6 +174,43 @@ public class EstudianteService implements CRUDOperation<EstudianteDTO> {
 	public long count() {
 		return estudianterepo.count();
 	}
+	public int actualizarImagen(String usuario, String imagenBase64) {
+	    try {
+	        String usuarioEncriptado = AESUtil.encrypt(usuario); 
+	        Optional<Estudiante> found = estudianterepo.findByUsuario(usuarioEncriptado);
+	        
+	        if (found.isPresent()) {
+	        	Estudiante admin = found.get();
+	            admin.setImagenPerfil(imagenBase64);
+	            estudianterepo.save(admin);
+	            System.out.println("Imagen guardada para: " + usuario);
+	            return 0;
+	        }
+	        System.out.println("Usuario no encontrado: " + usuario);
+	        return 1;
+	        
+	    } catch (Exception e) {
+	        System.err.println("Error actualizando imagen: " + e.getMessage());
+	        return 2;
+	    }
+	}
+
+	public String obtenerImagen(String usuario) {
+	    try {
+	        String usuarioEncriptado = AESUtil.encrypt(usuario); // ← ENCRIPTAR PRIMERO
+	        Optional<Estudiante> found = estudianterepo.findByUsuario(usuarioEncriptado);
+	        
+	        if (found.isPresent()) {
+	            return found.get().getImagenPerfil();
+	        }
+	        return null;
+	        
+	    } catch (Exception e) {
+	        System.err.println("Error obteniendo imagen: " + e.getMessage());
+	        return null;
+	    }
+	}
+
 
 	@Override
 	public boolean exist(Long id) {

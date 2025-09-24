@@ -1,39 +1,34 @@
 package co.edu.unbosque.artemisa.dto;
 
-import java.util.Arrays;
+
 import java.util.Objects;
 
 
 public class LibroDTO {
 	
-	private Long id;
-	private String titulo;
-	private String autor;
-	private String descripcion;
-	private byte[] pdf;
-	private byte[] imagen;
+	 private Long id;
+	    private String titulo;
+	    private String author;
+	    private String descripcion;
+	    private String imagenBase64; 
+	    private String pdfBase64;  
 	
 	public LibroDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LibroDTO( String titulo, String autor, String descripcion, byte[] pdf, byte[] imagen) {
+	public LibroDTO( String titulo, String author, String descripcion, String imagenBase64, String pdfBase64) {
 		super();
 		this.titulo = titulo;
-		this.autor = autor;
+		this.author = author;
 		this.descripcion = descripcion;
-		this.pdf = pdf;
-		this.imagen = imagen;
+		this.imagenBase64 = imagenBase64;
+		this.pdfBase64 = pdfBase64;
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(imagen);
-		result = prime * result + Arrays.hashCode(pdf);
-		result = prime * result + Objects.hash(autor, descripcion, id, titulo);
-		return result;
+		return Objects.hash(author, descripcion, id, imagenBase64, pdfBase64, titulo);
 	}
 
 	@Override
@@ -45,9 +40,9 @@ public class LibroDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		LibroDTO other = (LibroDTO) obj;
-		return Objects.equals(autor, other.autor) && Objects.equals(descripcion, other.descripcion)
-				&& Objects.equals(id, other.id) && Arrays.equals(imagen, other.imagen) && Arrays.equals(pdf, other.pdf)
-				&& Objects.equals(titulo, other.titulo);
+		return Objects.equals(author, other.author) && Objects.equals(descripcion, other.descripcion)
+				&& Objects.equals(id, other.id) && Objects.equals(imagenBase64, other.imagenBase64)
+				&& Objects.equals(pdfBase64, other.pdfBase64) && Objects.equals(titulo, other.titulo);
 	}
 
 	public Long getId() {
@@ -66,12 +61,12 @@ public class LibroDTO {
 		this.titulo = titulo;
 	}
 
-	public String getAutor() {
-		return autor;
+	public String getAuthor() {
+		return author;
 	}
 
-	public void setAutor(String autor) {
-		this.autor = autor;
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
 	public String getDescripcion() {
@@ -82,27 +77,31 @@ public class LibroDTO {
 		this.descripcion = descripcion;
 	}
 
-	public byte[] getPdf() {
-		return pdf;
+	public String getImagenBase64() {
+		return imagenBase64;
 	}
 
-	public void setPdf(byte[] pdf) {
-		this.pdf = pdf;
+	public void setImagenBase64(String imagenBase64) {
+		this.imagenBase64 = imagenBase64;
 	}
 
-	public byte[] getImagen() {
-		return imagen;
+	public String getPdfBase64() {
+		return pdfBase64;
 	}
 
-	public void setImagen(byte[] imagen) {
-		this.imagen = imagen;
+	public void setPdfBase64(String pdfBase64) {
+		this.pdfBase64 = pdfBase64;
 	}
 
 	@Override
 	public String toString() {
-		return "LibroDTO [id=" + id + ", titulo=" + titulo + ", autor=" + autor + ", descripcion=" + descripcion
-				+ ", pdf=" + Arrays.toString(pdf) + ", imagen=" + Arrays.toString(imagen) + "]";
+		return "LibroDTO [id=" + id + ", titulo=" + titulo + ", author=" + author + ", descripcion=" + descripcion
+				+ ", imagenBase64=" + imagenBase64 + ", pdfBase64=" + pdfBase64 + "]";
 	}
+	
+	
+
+	
 	
 
 }
