@@ -1,0 +1,8 @@
+co.edu.unbosque.artemisa
+co.edu.unbosque.artemisa.configuration
+co.edu.unbosque.artemisa.controller
+co.edu.unbosque.artemisa.dto
+co.edu.unbosque.artemisa.entity
+co.edu.unbosque.artemisa.repository
+co.edu.unbosque.artemisa.service
+co.edu.unbosque.artemisa.util
