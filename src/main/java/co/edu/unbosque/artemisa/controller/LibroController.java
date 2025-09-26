@@ -17,6 +17,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import co.edu.unbosque.artemisa.dto.LibroDTO;
 import co.edu.unbosque.artemisa.service.LibroService;
 
+/**
+ * Controlador REST para la gestión de libros.
+ * 
+ * Proporciona endpoints para:
+ * <ul>
+ * <li>Crear libros (mediante JSON o parámetros en URL).</li>
+ * <li>Obtener todos los libros registrados.</li>
+ * <li>Eliminar libros por título.</li>
+ * </ul>
+ */
 @RestController
 @CrossOrigin(origins = { "*" })
 @RequestMapping(path = { "/libro" })
@@ -25,10 +35,16 @@ public class LibroController {
 	@Autowired
 	private LibroService libroserv;
 
+	/**
+	 * Crea un nuevo libro a partir de un objeto JSON.
+	 *
+	 * @param nuevoLibro objeto {@link LibroDTO} con la información del libro.
+	 * @return ResponseEntity con: - 201 (CREATED) si se creó exitosamente. - 409
+	 *         (CONFLICT) si el libro ya existe. - 400 (BAD REQUEST) si los datos
+	 *         son inválidos. - 500 (INTERNAL SERVER ERROR) en caso de error.
+	 */
 	@PostMapping(path = "/createlibrojson", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> createNewWithJSON(@RequestBody LibroDTO nuevoLibro) {
-		System.out.println("Datos recibidos: " + nuevoLibro.toString());
-
 		int status = libroserv.create(nuevoLibro);
 
 		switch (status) {
@@ -43,10 +59,15 @@ public class LibroController {
 		}
 	}
 
+	/**
+	 * Obtiene todos los libros registrados.
+	 *
+	 * @return ResponseEntity con: - 200 (OK) y lista de libros si existen. - 204
+	 *         (NO CONTENT) si no hay libros.
+	 */
 	@GetMapping("/getall")
 	public ResponseEntity<List<LibroDTO>> getAll() {
 		List<LibroDTO> libros = libroserv.getAll();
-		System.out.println("Libros: " + libros.size());
 
 		if (libros.isEmpty()) {
 			return new ResponseEntity<>(libros, HttpStatus.NO_CONTENT);
@@ -55,6 +76,13 @@ public class LibroController {
 		}
 	}
 
+	/**
+	 * Elimina un libro según su título.
+	 *
+	 * @param title título del libro a eliminar.
+	 * @return ResponseEntity con: - 202 (ACCEPTED) si fue eliminado correctamente.
+	 *         - 404 (NOT FOUND) si no se encontró el libro.
+	 */
 	@DeleteMapping("/deletebyTitle")
 	ResponseEntity<String> deleteByTitle(@RequestParam String title) {
 		int status = libroserv.deleteByTitle(title);
@@ -65,13 +93,25 @@ public class LibroController {
 		}
 	}
 
+	/**
+	 * Crea un nuevo libro utilizando parámetros enviados en la URL.
+	 *
+	 * @param titulo       título del libro.
+	 * @param author       autor del libro.
+	 * @param descripcion  descripción del libro.
+	 * @param enlace       enlace relacionado con el libro.
+	 * @param imagenBase64 imagen del libro en formato Base64.
+	 * @param pdfBase64    archivo PDF del libro en formato Base64.
+	 * @return ResponseEntity con: - 201 (CREATED) si se creó exitosamente. - 409
+	 *         (CONFLICT) si el libro ya existe. - 400 (BAD REQUEST) si los datos
+	 *         son inválidos. - 500 (INTERNAL SERVER ERROR) en caso de error.
+	 */
 	@PostMapping(path = "/createlibro")
 	public ResponseEntity<String> createNew(@RequestParam String titulo, @RequestParam String author,
-			@RequestParam String descripcion, @RequestParam String imagenBase64,
+			@RequestParam String descripcion, @RequestParam String enlace, @RequestParam String imagenBase64,
 			@RequestParam String pdfBase64) {
-
 		try {
-			LibroDTO nuevoLibro = new LibroDTO(titulo,author,descripcion,imagenBase64,pdfBase64);
+			LibroDTO nuevoLibro = new LibroDTO(null, titulo, author, descripcion, enlace, imagenBase64, pdfBase64);
 			int status = libroserv.create(nuevoLibro);
 
 			switch (status) {

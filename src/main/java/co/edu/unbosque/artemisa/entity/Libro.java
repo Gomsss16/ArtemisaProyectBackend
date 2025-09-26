@@ -3,14 +3,16 @@ package co.edu.unbosque.artemisa.entity;
 import java.util.Arrays;
 import java.util.Objects;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
+/**
+ * Entidad que representa un libro dentro del sistema.
+ * <p>
+ * Cada libro contiene información básica como título, autor, descripción,
+ * enlace externo y puede almacenar tanto un archivo PDF como una imagen de
+ * portada.
+ * </p>
+ */
 @Entity
 @Table(name = "libro")
 public class Libro {
@@ -19,36 +21,61 @@ public class Libro {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true)
+	/**
+	 * Título único del libro.
+	 */
+	@Column(unique = true, nullable = false)
 	private String titulo;
 
+	/**
+	 * Autor del libro.
+	 */
 	private String author;
 
+	/**
+	 * Descripción del libro (larga).
+	 */
 	@Column(columnDefinition = "TEXT")
 	private String descripcion;
 
+	/**
+	 * Enlace externo relacionado al libro.
+	 */
+	private String enlace;
 
-
+	/**
+	 * Archivo PDF del libro.
+	 */
 	@Lob
 	@Column(name = "pdf", columnDefinition = "LONGBLOB")
 	private byte[] pdf;
 
+	/**
+	 * Imagen de portada del libro.
+	 */
 	@Lob
 	@Column(name = "imagen", columnDefinition = "LONGBLOB")
 	private byte[] imagen;
 
+	/**
+	 * Constructor vacío requerido por JPA.
+	 */
 	public Libro() {
 	}
 
-	public Libro(Long id, String titulo, String author, String descripcion, byte[] pdf, byte[] imagen) {
-		super();
+	/**
+	 * Constructor completo.
+	 */
+	public Libro(Long id, String titulo, String author, String descripcion, String enlace, byte[] pdf, byte[] imagen) {
 		this.id = id;
 		this.titulo = titulo;
 		this.author = author;
 		this.descripcion = descripcion;
+		this.enlace = enlace;
 		this.pdf = pdf;
 		this.imagen = imagen;
 	}
+
 
 	public Long getId() {
 		return id;
@@ -82,6 +109,14 @@ public class Libro {
 		this.descripcion = descripcion;
 	}
 
+	public String getEnlace() {
+		return enlace;
+	}
+
+	public void setEnlace(String enlace) {
+		this.enlace = enlace;
+	}
+
 	public byte[] getPdf() {
 		return pdf;
 	}
@@ -98,36 +133,32 @@ public class Libro {
 		this.imagen = imagen;
 	}
 
+	
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(imagen);
-		result = prime * result + Arrays.hashCode(pdf);
-		result = prime * result + Objects.hash(author, descripcion, id, titulo);
-		return result;
+		return Objects.hash(id, titulo, author, descripcion, enlace) + Arrays.hashCode(pdf) + Arrays.hashCode(imagen);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!(obj instanceof Libro other))
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Libro other = (Libro) obj;
-		return Objects.equals(author, other.author) && Objects.equals(descripcion, other.descripcion)
-				&& Objects.equals(id, other.id) && Arrays.equals(imagen, other.imagen) && Arrays.equals(pdf, other.pdf)
-				&& Objects.equals(titulo, other.titulo);
+		return Objects.equals(id, other.id) && Objects.equals(titulo, other.titulo)
+				&& Objects.equals(author, other.author) && Objects.equals(descripcion, other.descripcion)
+				&& Objects.equals(enlace, other.enlace) && Arrays.equals(pdf, other.pdf)
+				&& Arrays.equals(imagen, other.imagen);
 	}
+
+	// ================= ToString =================
 
 	@Override
 	public String toString() {
-		return "Libro [id=" + id + ", titulo=" + titulo + ", author=" + author + ", descripcion=" + descripcion
-				+ ", pdf=" + Arrays.toString(pdf) + ", imagen=" + Arrays.toString(imagen) + "]";
+		return "Libro{id=" + id + ", titulo='" + titulo + '\'' + ", author='" + author + '\'' + ", descripcion='"
+				+ descripcion + '\'' + ", enlace='" + enlace + '\'' + ", pdf="
+				+ (pdf != null ? pdf.length + " bytes" : "null") + ", imagen="
+				+ (imagen != null ? imagen.length + " bytes" : "null") + '}';
 	}
-	
-	
-
 }

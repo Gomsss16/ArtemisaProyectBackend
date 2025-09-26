@@ -2,28 +2,62 @@ package co.edu.unbosque.artemisa.dto;
 
 import java.util.Objects;
 
+/**
+ * Data Transfer Object (DTO) para la entidad
+ * {@link co.edu.unbosque.artemisa.entity.Administrador}.
+ * <p>
+ * Este DTO se utiliza para transferir información de administradores entre las
+ * capas de la aplicación sin exponer directamente la entidad.
+ * </p>
+ */
 public class AdministradorDTO {
 
+	/**
+	 * Identificador único del administrador.
+	 */
 	private Long id;
+
+	/**
+	 * Nombre de usuario del administrador.
+	 */
 	private String usuario;
+
+	/**
+	 * Contraseña de acceso del administrador.
+	 */
 	private String contrasenia;
+
+	/**
+	 * Nivel de permisos del administrador. Representa el rol o autoridad dentro del
+	 * sistema.
+	 */
 	private String nivelDePermiso;
+
+	/**
+	 * Fecha de nacimiento del administrador.
+	 */
 	private String fechaDeNacimiento;
 
-	public AdministradorDTO() {
-
-	}
-
+	/**
+	 * Imagen de perfil del administrador codificada en base64 o como cadena.
+	 */
 	private String imagenPerfil;
 
-	public String getImagenPerfil() {
-		return imagenPerfil;
+	/**
+	 * Constructor vacío requerido para instanciación sin datos iniciales.
+	 */
+	public AdministradorDTO() {
 	}
 
-	public void setImagenPerfil(String imagenPerfil) {
-		this.imagenPerfil = imagenPerfil;
-	}
-
+	/**
+	 * Constructor que inicializa los atributos principales del administrador.
+	 *
+	 * @param id                identificador único
+	 * @param usuario           nombre de usuario
+	 * @param contrasenia       contraseña de acceso
+	 * @param nivelDePermiso    rol o permisos asignados
+	 * @param fechaDeNacimiento fecha de nacimiento
+	 */
 	public AdministradorDTO(Long id, String usuario, String contrasenia, String nivelDePermiso,
 			String fechaDeNacimiento) {
 		super();
@@ -34,11 +68,130 @@ public class AdministradorDTO {
 		this.fechaDeNacimiento = fechaDeNacimiento;
 	}
 
+	/**
+	 * Obtiene la imagen de perfil del administrador.
+	 *
+	 * @return imagen de perfil en formato cadena
+	 */
+	public String getImagenPerfil() {
+		return imagenPerfil;
+	}
+
+	/**
+	 * Establece la imagen de perfil del administrador.
+	 *
+	 * @param imagenPerfil nueva imagen de perfil
+	 */
+	public void setImagenPerfil(String imagenPerfil) {
+		this.imagenPerfil = imagenPerfil;
+	}
+
+	/**
+	 * Obtiene el identificador único.
+	 *
+	 * @return id del administrador
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * Asigna un identificador único.
+	 *
+	 * @param id nuevo identificador
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	/**
+	 * Obtiene el nombre de usuario.
+	 *
+	 * @return nombre de usuario
+	 */
+	public String getUsuario() {
+		return usuario;
+	}
+
+	/**
+	 * Establece el nombre de usuario.
+	 *
+	 * @param usuario nuevo nombre de usuario
+	 */
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	/**
+	 * Obtiene la contraseña.
+	 *
+	 * @return contraseña
+	 */
+	public String getContrasenia() {
+		return contrasenia;
+	}
+
+	/**
+	 * Establece la contraseña.
+	 *
+	 * @param contrasenia nueva contraseña
+	 */
+	public void setContrasenia(String contrasenia) {
+		this.contrasenia = contrasenia;
+	}
+
+	/**
+	 * Obtiene el nivel de permisos.
+	 *
+	 * @return nivel de permisos
+	 */
+	public String getNivelDePermiso() {
+		return nivelDePermiso;
+	}
+
+	/**
+	 * Establece el nivel de permisos.
+	 *
+	 * @param nivelDePermiso nuevo nivel de permisos
+	 */
+	public void setNivelDePermiso(String nivelDePermiso) {
+		this.nivelDePermiso = nivelDePermiso;
+	}
+
+	/**
+	 * Obtiene la fecha de nacimiento.
+	 *
+	 * @return fecha de nacimiento
+	 */
+	public String getFechaDeNacimiento() {
+		return fechaDeNacimiento;
+	}
+
+	/**
+	 * Establece la fecha de nacimiento.
+	 *
+	 * @param fechaDeNacimiento nueva fecha de nacimiento
+	 */
+	public void setFechaDeNacimiento(String fechaDeNacimiento) {
+		this.fechaDeNacimiento = fechaDeNacimiento;
+	}
+
+	/**
+	 * Calcula el hash del objeto en base a sus atributos principales.
+	 *
+	 * @return valor hash
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(contrasenia, fechaDeNacimiento, id, nivelDePermiso, usuario);
 	}
 
+	/**
+	 * Compara dos objetos para determinar si son iguales.
+	 *
+	 * @param obj objeto a comparar
+	 * @return true si son iguales, false en caso contrario
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -53,50 +206,14 @@ public class AdministradorDTO {
 				&& Objects.equals(nivelDePermiso, other.nivelDePermiso) && Objects.equals(usuario, other.usuario);
 	}
 
+	/**
+	 * Representación en cadena del objeto.
+	 *
+	 * @return cadena con los valores de los atributos principales
+	 */
 	@Override
 	public String toString() {
 		return "AdministradorDTO [id=" + id + ", usuario=" + usuario + ", contrasenia=" + contrasenia
 				+ ", nivelDePermiso=" + nivelDePermiso + ", fechaDeNacimiento=" + fechaDeNacimiento + "]";
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
-
-	public String getContrasenia() {
-		return contrasenia;
-	}
-
-	public void setContrasenia(String contrasenia) {
-		this.contrasenia = contrasenia;
-	}
-
-	public String getNivelDePermiso() {
-		return nivelDePermiso;
-	}
-
-	public void setNivelDePermiso(String nivelDePermiso) {
-		this.nivelDePermiso = nivelDePermiso;
-	}
-
-	public String getFechaDeNacimiento() {
-		return fechaDeNacimiento;
-	}
-
-	public void setFechaDeNacimiento(String fechaDeNacimiento) {
-		this.fechaDeNacimiento = fechaDeNacimiento;
-	}
-
 }

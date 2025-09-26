@@ -3,15 +3,15 @@ package co.edu.unbosque.artemisa.entity;
 import java.util.Date;
 import java.util.Objects;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 
+/**
+ * Entidad que representa un evento dentro del sistema.
+ * <p>
+ * Los eventos pueden ser presenciales o virtuales y contienen información como
+ * título, descripción, tipo, fecha, enlace (si aplica) y ubicación.
+ * </p>
+ */
 @Entity
 @Table(name = "evento")
 public class Evento {
@@ -20,24 +20,48 @@ public class Evento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true)
+	/**
+	 * Título único del evento.
+	 */
+	@Column(unique = true, nullable = false)
 	private String titulo;
 
+	/**
+	 * Descripción detallada del evento.
+	 */
 	@Column(columnDefinition = "TEXT")
 	private String descripcion;
 
+	/**
+	 * Tipo de evento (ejemplo: conferencia, taller, seminario, etc.).
+	 */
 	private String tipo;
 
+	/**
+	 * Fecha y hora en que ocurre el evento.
+	 */
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fecha;
 
+	/**
+	 * Enlace al evento (aplica si es virtual).
+	 */
 	private String enlace;
 
+	/**
+	 * Ubicación del evento (aplica si es presencial).
+	 */
 	private String ubicacion;
 
+	/**
+	 * Constructor vacío requerido por JPA.
+	 */
 	public Evento() {
 	}
 
+	/**
+	 * Constructor con parámetros.
+	 */
 	public Evento(Long id, String titulo, String descripcion, String tipo, Date fecha, String enlace,
 			String ubicacion) {
 		this.id = id;
@@ -49,27 +73,7 @@ public class Evento {
 		this.ubicacion = ubicacion;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(descripcion, enlace, fecha, id, tipo, titulo, ubicacion);
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Evento other = (Evento) obj;
-		return Objects.equals(descripcion, other.descripcion) && Objects.equals(enlace, other.enlace)
-				&& Objects.equals(fecha, other.fecha) && Objects.equals(id, other.id)
-				&& Objects.equals(tipo, other.tipo) && Objects.equals(titulo, other.titulo)
-				&& Objects.equals(ubicacion, other.ubicacion);
-	}
-
-	// Getters y Setters
 	public Long getId() {
 		return id;
 	}
@@ -127,8 +131,23 @@ public class Evento {
 	}
 
 	@Override
+	public int hashCode() {
+		return Objects.hash(id, titulo, fecha);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof Evento other))
+			return false;
+		return Objects.equals(id, other.id) && Objects.equals(titulo, other.titulo)
+				&& Objects.equals(fecha, other.fecha);
+	}
+
+	@Override
 	public String toString() {
-		return "Evento [id=" + id + ", titulo=" + titulo + ", descripcion=" + descripcion + ", tipo=" + tipo
-				+ ", fecha=" + fecha + ", enlace=" + enlace + ", ubicacion=" + ubicacion + "]";
+		return "Evento{id=" + id + ", titulo='" + titulo + '\'' + ", tipo='" + tipo + '\'' + ", fecha=" + fecha
+				+ ", ubicacion='" + ubicacion + '\'' + ", enlace='" + (enlace != null ? enlace : "N/A") + '\'' + '}';
 	}
 }
